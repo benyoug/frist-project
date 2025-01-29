@@ -1,3 +1,36 @@
+# name: Build and Push Docker Image
+
+# on:
+#   push:
+#     branches:
+#       - main
+
+# jobs:
+#   build-and-push:
+#     runs-on: ubuntu-latest
+
+#     steps:
+#     - name: Checkout repository
+#       uses: actions/checkout@v3
+
+#     - name: Log in to Docker Hub
+#       uses: docker/login-action@v2
+#       with:
+#         username: ${{ secrets.username }}
+#         password: ${{ secrets.password }}
+
+#     - name: Build and push Docker image
+#           run: |
+#             docker build -t aicha570/flask_app:latest
+#     - name: Build and push Docker image
+#           run: |
+#             docker push ${{secrets.username}}/aicha570/flask_app:latest
+#       uses: docker/build-push-action@v4
+#       with:
+#         context: .
+#         push: true
+#         tags: aicha570/flask_app:latest
+
 name: Build and Push Docker Image
 
 on:
@@ -8,25 +41,24 @@ on:
 jobs:
   build-and-push:
     runs-on: ubuntu-latest
-
     steps:
-    - name: Checkout repository
-      uses: actions/checkout@v3
+      # Étape 1 : Récupérer le code
+      - name: Checkout code
+        uses: actions/checkout@v3
 
-    - name: Log in to Docker Hub
-      uses: docker/login-action@v2
-      with:
-        username: ${{ secrets.username }}
-        password: ${{ secrets.password }}
+      # Étape 2 : Se connecter à Docker Hub
+      - name: Log in to Docker Hub
+        uses: docker/login-action@v2
+        with:
+          username: ${{ secrets.username }}
+          password: ${{ secrets.password }}
 
-    - name: Build and push Docker image
-          run: |
-            docker build -t aicha570/flask_app:latest
-    - name: Build and push Docker image
-          run: |
-            docker push ${{secrets.username}}/aicha570/flask_app:latest
-      uses: docker/build-push-action@v4
-      with:
-        context: .
-        push: true
-        tags: aicha570/flask_app:latest
+      # Étape 3 : Construire l'image Docker
+      - name: Build Docker image
+        run: |
+          docker build -t ${{ secrets.username }}/flask_app:latest .
+
+      # Étape 4 : Pousser l'image Docker
+      - name: Push Docker image
+        run: |
+          docker push ${{ secrets.username }}/flask_app:latest
