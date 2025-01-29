@@ -16,12 +16,12 @@ jobs:
     - name: Log in to Docker Hub
       uses: docker/login-action@v2
       with:
-        username: ${{ secrets.DOCKER_AICHA }}
-        password: ${{ secrets.elyaicha055 }}
+        username: ${{ secrets.username }}
+        password: ${{ secrets.password }}
 
     - name: Build and push Docker image
       uses: docker/build-push-action@v4
       with:
         context: .
         push: true
-        tags: aicha570/flask_app:latest12
+        tags: aicha570/flask_app:latest
